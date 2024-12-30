@@ -1,42 +1,42 @@
 export default class Loteria {
-    gerarNumero(limit) {
-        return Math.floor(Math.random() * limit)
+    #gerarNumero(limite) {
+        return Math.floor(Math.random() * limite)
     } 
 
-    sortfunction(a, b) { 
+    #organizarArray(a, b) { 
         return (a - b)
     }
 
-    baseDeCalculo(qtdJogos, qtdNumeros, qtdProbabilidades){
+    #baseDeCalculo(qtdJogos, qtdNumeros, qtdProbabilidades, range){
         let resultado = {}
+        if(qtdNumeros < range[0]) qtdNumeros = range[0]
+        if(qtdNumeros > range[1]) qtdNumeros = range[1]
         for (let i = 0; i < qtdJogos; i++) {
             const sorteio = []
             while(sorteio.length < qtdNumeros) {
-                const numeroGerado = this.gerarNumero(qtdProbabilidades)
+                const numeroGerado = this.#gerarNumero(qtdProbabilidades)
                 if (!sorteio.includes(numeroGerado) && numeroGerado !== 0) {
                     sorteio.push(numeroGerado)
                 } 
             }
-            resultado[`jogo_${i + 1}`] = sorteio.sort(this.sortfunction)
+            resultado[`jogo_${i + 1}`] = sorteio.sort(this.#organizarArray)
         }
         return resultado
     }
 
     megasena(jogos, numeros = 6) {
-        if( numeros > 20) numeros = 20
-        if( numeros < 6) numeros = 6
-       return this.baseDeCalculo(jogos, 6, 60)
+       return this.#baseDeCalculo(jogos, numeros, 60, [6, 20])
     }
+
     lotofacil(jogos, numeros = 15) { 
-        if( numeros > 18) numeros = 18
-        if( numeros < 15) numeros = 15
-        return this.baseDeCalculo(jogos, numeros, 25)
+        return this.#baseDeCalculo(jogos, numeros, 25, [15, 18])
     }
+
     quina(jogos, numeros = 5) { 
-        if( numeros > 15) numeros = 15
-        if( numeros < 5) numeros = 5
-        return this.baseDeCalculo(jogos, numeros, 80)
+        return this.#baseDeCalculo(jogos, numeros, 80, [5, 15])
     }
 }
 
+const aposta = new Loteria()
+console.log(aposta.megasena(10))
 
