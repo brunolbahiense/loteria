@@ -1,4 +1,4 @@
-class Loteria {
+export default class Loteria {
     gerarNumero(limit) {
         return Math.floor(Math.random() * limit)
     } 
